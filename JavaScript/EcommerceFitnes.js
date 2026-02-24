@@ -37,7 +37,7 @@ function calcularCantidadTotal() {
     return totalCantidad;
 }
 
-function eliminarDeCarrito(indice) {
+const eliminarDeCarrito = (indice) => {
     if (productos[indice].cantidad > 0) {
         console.log("Usted elimino " + productos[indice].nombre);
         alert("Usted elimino " + productos[indice].nombre)
@@ -48,13 +48,75 @@ function eliminarDeCarrito(indice) {
     }
 }
 
+function modificarCarrito(indice) {
+
+    if (productos[indice].cantidad === 0) {
+        alert("Ese producto no está en el carrito.");
+        return;
+    }
+
+    let nuevaCantidad = prompt(
+        "Actualmente tienes " + productos[indice].cantidad +
+        " de " + productos[indice].nombre +
+        ". Ingrese la nueva cantidad (0 para eliminar):"
+    );
+
+    if (nuevaCantidad === null) return;
+
+    nuevaCantidad = parseInt(nuevaCantidad);
+
+    if (nuevaCantidad < 0) {
+        alert("Cantidad inválida");
+        return;
+    }
+    productos[indice].cantidad = nuevaCantidad;
+    alert("Cantidad actualizada correctamente.");
+}
+
+function menuModificar() {
+    let opcion = prompt(
+        mostrarPedido() +
+        "\nSelecione que producto desea modificar: \n" +
+        "1) Proteina\n" +
+        "2) Creatina\n" +
+        "3) Vitamina\n" +
+        "4) Omega 3\n" +
+        "5) Aminoacidos\n" +
+        "6) Preentreno\n" +
+        "0) Volver al menu principal"
+    );
+
+    if (opcion === "0" || opcion === null) {
+        return;
+    }
+
+    let indice = parseInt(opcion) - 1;
+
+    if (indice >= 0 && indice < productos.length) {
+        modificarCarrito(indice);
+    } else {
+        alert("Opción inválida");
+    }
+}
+
 function menuPrincipal() {
 
-    let respuesta = prompt("Diga que quiere elegir del menu: \n 1) Proteina \n 2) Creatina \n 3) Vitamina \n 4) Omega 3 \n 5) Aminoacidos \n 6) Preentreno \n T) Ver el total hasta el momento \n E) eliminar producto del pedido \n 0) Salir del menu")
+    let respuesta = prompt("Diga que quiere elegir del menu: \n" +
+        "1) Proteina\n" +
+        "2) Creatina\n" +
+        "3) Vitamina\n" +
+        "4) Omega 3\n" +
+        "5) Aminoacidos\n" +
+        "6) Preentreno\n" +
+        "T) Ver el total hasta el momento\n" +
+        "E) eliminar producto del pedido\n" +
+        "M) modificar carrito\n" +
+        "0) Usted finalizo la compra"
+    );
 
-    if(respuesta == null){
+    if (respuesta == null) {
         eleccion = "0"
-    }else{
+    } else {
         eleccion = respuesta.toUpperCase();
     }
 
@@ -89,12 +151,15 @@ function menuPrincipal() {
                 alert("No hay productos para eliminar");
                 break;
             }
-            
+
             eliminacion = "";
 
             while (eliminacion !== "0") {
                 menuEliminacion();
             }
+            break;
+        case "M":
+            menuModificar();
             break;
         case "0":
             console.log("Usted salio del menu, Muchas gracias por la compra");
@@ -107,7 +172,15 @@ function menuPrincipal() {
 }
 
 function menuEliminacion() {
-    eliminacion = prompt(mostrarPedido() + " que producto va eliminar del carrito: \n 1) Proteina \n 2) Creatina \n 3) Vitamina \n 4) Omega 3 \n 5) Aminoacidos \n 6) Preentreno\n 0) Volver al menu principal");
+    eliminacion = prompt(mostrarPedido() + " que producto va eliminar del carrito: \n" +
+        "1) Proteina\n" +
+        "2) Creatina\n" +
+        "3) Vitamina\n" +
+        "4) Omega 3\n" +
+        "5) Aminoacidos\n" +
+        "6) Preentreno\n" +
+        "0) Volver al menu principal"
+    );
 
     switch (eliminacion) {
         case "1":
